@@ -15,11 +15,11 @@ storage = MemoryStorage ()
 #import basa as db
 #from basa import create_profile, db_start, edit_profile
 
-TOKEN_API = ('6704702920:AAHiV01ua2oTWCP8c6skC6IYFU5OVjUX-5o')
+TOKEN_API = *API_TOKEN*)
 bot = Bot(TOKEN_API)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
-class ProfileStateGroup (StatesGroup):
+class ProfileStateGroup (StatesGroup): #Объявляю классы
      up_time = State ()
      down_time = State ()
      happy_stat = State ()
@@ -65,22 +65,22 @@ async def ikb_cb_handler(callback_query: types.CallbackQuery) -> None:
 async def callback_query_keyboard(callback_query: types.CallbackQuery, state=None):
     if callback_query.data == 'up_time':
         await bot.send_message(chat_id=callback_query.from_user.id, text='Запиши время подъема: ')
-        await ProfileStateGroup.up_time.set()
+        await ProfileStateGroup.up_time.set() # Объявляю установку класса
     elif callback_query.data == 'down_time':
         await bot.send_message(chat_id=callback_query.from_user.id, text="Запиши время отбоя:")
-        await ProfileStateGroup.down_time.set()
+        await ProfileStateGroup.down_time.set() # Объявляю установку класса
     elif callback_query.data == 'happy_stat':
         await bot.send_message(chat_id=callback_query.from_user.id, text='Запиши свое настроение:')
-        await ProfileStateGroup.happy_stat.set()
+        await ProfileStateGroup.happy_stat.set() # Объявляю установку класса
 
-@dp.message_handler(content_types=['up_time'], state=ProfileStateGroup.up_time)
+@dp.message_handler(content_types=['up_time'], state=ProfileStateGroup.up_time) # Ловлю 1 класс
 async def time_up_st(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['up_time'] = message.text
     await message.reply('Отлично, я запомнил время подъема!')
     await state.finish()
 
-@dp.message_handler(content_types=['down_time'], state=ProfileStateGroup.down_time)
+@dp.message_handler(content_types=['down_time'], state=ProfileStateGroup.down_time) # Ловлю 2 класс
 async def time_down_st(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['down_time'] = message.text
@@ -88,7 +88,7 @@ async def time_down_st(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-@dp.message_handler(content_types=['happy_stat'], state=ProfileStateGroup.happy_stat)
+@dp.message_handler(content_types=['happy_stat'], state=ProfileStateGroup.happy_stat) # Ловлю 3 класс
 async def happy_stat_st(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['happy_stat'] = message.text
@@ -103,27 +103,3 @@ async def ull_mess (message: types.Message):
 
 if __name__ == '__main__':
     executor.start_polling(dp, on_startup=on_startup)
-#@dp.message_handler(text=['Подъем'])
-#async def up_comm (message: types.Message):
-#    await message.answer("Напиши время, в которое ты сегодня проснулась: ")
-
-#@dp.message_handler()
-#async def up_ans (message: types.Message):
-        #up_answ = message.text
-        #await message.answer('Отлично! Я запомнил!')
-
-
-#@dp.message_handler(text=['Отбой'])
-#async def down_comm (message: types.Message):
-#    await message.answer("Зафиксируй время, когда ты отправилась спать вчера: ")
-
-#@dp.message_handler(text=['Настроение'])
-#async def happy_comm (message: types.message):
-#    await message.answer('Запиши свое настроение в данный момент. Что с тобой случилось за сегодня? Расскажи обо всем, чем бы тебе хотелось поделиться:')
-       # async def down_p (d_p: types.Message):
-          #  await bot.send_message(down_p.from_user.id, down_p.text)
-#@db.callback_query_handler()
-#async def funck_calback(calback: types.CallbackQuery)
-
-
-
